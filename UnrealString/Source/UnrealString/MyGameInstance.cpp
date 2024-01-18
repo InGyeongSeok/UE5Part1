@@ -8,7 +8,7 @@ void UMyGameInstance::Init()
 	Super::Init();
 
 	TCHAR LogCharArray[] = TEXT("Hello unreal");
-	UE_LOG(LogTemp, Log, TEXT("%s"), LogCharArray); // @@@왜 안됨??
+	UE_LOG(LogTemp, Log, TEXT("%s"), LogCharArray);
 
 	FString LogCharString = LogCharArray; // FString으로 넣었다
 	UE_LOG(LogTemp, Log, TEXT("%s"), *LogCharString);
@@ -38,7 +38,7 @@ void UMyGameInstance::Init()
 	int32 IntValue = 32;
 	float FloatValue = 3.141592;
 	//로그로 출력하고자 하는 Text로 변환이 가능하다.
-	FString FloatIntString = FString::Printf(TEXT("Int %d, Float %f"), IntValue, FloatValue); //@@@이거 왜 안나옴?
+	FString FloatIntString = FString::Printf(TEXT("Int %d, Float %f"), IntValue, FloatValue);
 	FString FloatString = FString::SanitizeFloat(FloatValue);
 	FString IntString = FString::FromInt(IntValue);
 	//해당 정수를 소수나, 정수로 바꿀 수 있다. => 다소 직관적인 편.
@@ -63,6 +63,4 @@ void UMyGameInstance::Init()
 		//로컬 static을 이용해서 그냥 한번만 선언하고, 이후에는 그냥 끌어다 쓰겠다는 걸 의미한다.
 		//Tick 같은 함수에 FName을 넣으면 오버헤드가 발생할 수 있다.
 	}
-
-	//@@@ FString과 FName의 차이점은? 함수와 클래스
 }
