@@ -5,34 +5,33 @@
 #include "Teacher.h"
 #include "Staff.h"
 #include "Card.h"
+#include "CourseInfo.h"
 
 UMyGameInstance::UMyGameInstance()
 {
-	SchoolName = TEXT("기본학교"); //이 기본값은 Class Default Object라는 템플릿 객체에 저장이 된 채로 존재
+	SchoolName = TEXT("학교");
 }
 
 void UMyGameInstance::Init()
 {
 	Super::Init();
 
+	CourseInfo = NewObject<UCourseInfo>(this);
+
 	UE_LOG(LogTemp, Log, TEXT("============================"));
 
-	TArray<UPerson*> Persons = { NewObject<UStudent>(), NewObject<UTeacher>(), NewObject<UStaff>() };
-	for (const auto Person : Persons)
-	{
-		const UCard* OwnCard = Person->GetCard();
-		check(OwnCard);
-		ECardType CardType = OwnCard->GetCardType();
-		UE_LOG(LogTemp, Log, TEXT("%s님이 소유한 카드의 종류는 %d"), *Person->GetName(), CardType);
+	UStudent* Student1 = NewObject<UStudent>();
+	Student1->SetName(TEXT("학생1"));
+	UStudent* Student2 = NewObject<UStudent>();
+	Student2->SetName(TEXT("학생2"));
+	UStudent* Student3 = NewObject<UStudent>();
+	Student3->SetName(TEXT("학생3"));
 
-		const UEnum* CardEnumType = FindObject<UEnum>(nullptr, TEXT("/Script/UnrealComposition.ECardType")); //TEXT에 들어가는 절대 주소값을 사용해서 원하는 타입 정보를 얻어올 수 있다.
-		//C++에 생성된 언리얼 객체는 Script라는 절대 주소를 가진다 // 모듈(UnrealComposition)에서 타입을 가지고 온다 
-		if (CardEnumType)
-		{
-			FString CardMetaData = CardEnumType->GetDisplayNameTextByValue((int64)CardType).ToString();
-			UE_LOG(LogTemp, Log, TEXT("%s님이 소유한 카드의 종류는 %s"), *Person->GetName(), *CardMetaData);
-		}
-	}
+	CourseInfo->OnChanged.AddUObject(Student1, &UStudent::GetNotification);
+	CourseInfo->OnChanged.AddUObject(Student2, &UStudent::GetNotification);
+	CourseInfo->OnChanged.AddUObject(Student3, &UStudent::GetNotification);
+
+	CourseInfo->ChangeCourseInfo(SchoolName, TEXT("변경된 학사 정보"));
 
 	UE_LOG(LogTemp, Log, TEXT("============================"));
 }
