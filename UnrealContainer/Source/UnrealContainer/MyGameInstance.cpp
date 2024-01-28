@@ -58,7 +58,7 @@ void UMyGameInstance::Init()
 	Int32Set.Remove(6);
 	Int32Set.Remove(8);
 	Int32Set.Remove(10);
-	Int32Set.Add(2);
+	Int32Set.Add(2); //가장 마지막에 빠진 요소에 대해서 빈틈을 채워 넣는 방식으로 
 	Int32Set.Add(4);
 	Int32Set.Add(6);
 	Int32Set.Add(8);
