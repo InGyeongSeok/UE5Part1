@@ -20,7 +20,8 @@ public:
 
 	virtual void DoLesson() override;
 
-
+	const int32& GetID() const;
+	
 private:
 	UPROPERTY()
 	int32 Id;

@@ -23,3 +23,4 @@ class UNREALOBJECT_API UMyObject : public UObject //MyObject의 이름은 접두사 U가
 	//컴파일 과정에서 자기 알아서 만들어지게 된다!
 	//결론 : 언리얼 헤더 툴을 가지고 만들어 낸 클래스들을 포함해서 언리얼 오브젝트가 만들어지게 된다.
 };
+

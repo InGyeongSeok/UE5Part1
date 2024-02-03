@@ -44,6 +44,16 @@ void UMyGameInstance::Init()
 	FString NewTeacherName(TEXT("이득우"));
 	//해당 클래스 내부에서 Name이라는 프로퍼티가 존재하는 지를 파악하고.
 	FProperty* NameProp = UTeacher::StaticClass()->FindPropertyByName(TEXT("Name"));
+	FProperty* studentID = UStudent::StaticClass()->FindPropertyByName(TEXT("Id"));
+
+	INT32 currentID;
+	if (studentID)
+	{
+		studentID->GetValue_InContainer(Student, &currentID);
+
+		UE_LOG(LogTemp, Log, TEXT("학생 ID : %d"), currentID);
+	}
+
 	if (NameProp)
 	{
 		//해당 프로퍼티에 있는 값을 저장하고자 하는 곳에 그대로 끌고 온다.
