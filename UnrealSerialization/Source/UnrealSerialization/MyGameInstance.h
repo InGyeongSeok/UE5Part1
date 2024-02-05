@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Engine/StreamableManager.h"
+#include "Engine/StreamableManager.h" //비동기 방식
 #include "MyGameInstance.generated.h"
 
 struct FStudentData
@@ -48,6 +48,6 @@ private:
 	UPROPERTY()
 	TObjectPtr<class UStudent> StudentSrc;
 
-	FStreamableManager StreamableManager;
+	FStreamableManager StreamableManager; 
 	TSharedPtr<FStreamableHandle> Handle;
 };

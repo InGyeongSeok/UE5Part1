@@ -4,7 +4,7 @@
 #include "MyGameInstance.h"
 #include "Student.h"
 #include "JsonObjectConverter.h" //Json으로 변환을 해줄 수 있는 헬퍼 라이브러리가 있음.
-#include "UObject/SavePackage.h"
+#include "UObject/SavePackage.h" //FSavePackageArgs
 
 const FString UMyGameInstance::PackageName = TEXT("/Game/Student");
 const FString UMyGameInstance::AssetName = TEXT("TopStudent");
@@ -156,6 +156,7 @@ void UMyGameInstance::Init()
 
 void UMyGameInstance::SaveStudentPackage() const
 {
+	//패키지가 있으면 다 로딩을 시킨다
 	UPackage* StudentPackage = ::LoadPackage(nullptr, *PackageName, LOAD_None);
 	if (StudentPackage)
 	{
@@ -163,9 +164,9 @@ void UMyGameInstance::SaveStudentPackage() const
 	}
 
 	StudentPackage = CreatePackage(*PackageName);
-	EObjectFlags ObjectFlag = RF_Public | RF_Standalone;
+	EObjectFlags ObjectFlag = RF_Public | RF_Standalone; //저장하고자 하는 옵션
 
-	UStudent* TopStudent = NewObject<UStudent>(StudentPackage, UStudent::StaticClass(), *AssetName, ObjectFlag);
+	UStudent* TopStudent = NewObject<UStudent>(StudentPackage, UStudent::StaticClass(), *AssetName, ObjectFlag); //인자가 없으면 Transient Package에 들어간다
 	TopStudent->SetName(TEXT("이득우"));
 	TopStudent->SetOrder(36);
 
@@ -178,7 +179,10 @@ void UMyGameInstance::SaveStudentPackage() const
 		SubStudent->SetOrder(ix);
 	}
 
-	const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+	//저장을 하려면 저장을 해줘야 되는 경로와 확장자가 필요하게 된다.
+	const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension()); //GetAssetPackageExtension = uasset의 확장자를 의미한다.
+	//PackageName : 프로젝트의 정보를 바탕으로 해서 컨텐츠 폴더를 지정하고 (/Game),이후에 파일이름을 지정하게 된다(Student)
+	//그 다음에.uasset이라는 확장자가 붙게 되어 최종 결과가 나온다.
 	FSavePackageArgs SaveArgs;
 	SaveArgs.TopLevelFlags = ObjectFlag;
 
@@ -198,7 +202,7 @@ void UMyGameInstance::LoadStudentPackage() const
 		return;
 	}
 
-	StudentPackage->FullyLoad();
+	StudentPackage->FullyLoad();// FullyLoad를 이용하여, 패키지에 대한 정보를 모두 가져온다.
 
 	UStudent* TopStudent = FindObject<UStudent>(StudentPackage, *AssetName);
 	PrintStudentInfo(TopStudent, TEXT("FindObject Asset"));
